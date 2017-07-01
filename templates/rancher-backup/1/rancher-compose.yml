@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: "Rancher Backup"
-  version: "develop"
+  version: "2.0.1"
   description: "It's a general purpose to solve backup matter on Rancher"
   minimum_rancher_version: v1.5.0
   questions:
