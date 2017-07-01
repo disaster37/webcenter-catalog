@@ -42,6 +42,7 @@ services:
       io.rancher.sidekicks: docker-engine
       io.rancher.container.create_agent: true
       io.rancher.container.agent.role: environment
+      io.rancher.container.pull_image: always
     tty: true
     image: webcenter/rancher-backup:develop
     stdin_open: false
