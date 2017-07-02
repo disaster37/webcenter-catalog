@@ -50,7 +50,7 @@ services:
     {{- if (contains .Values.VOLUME_DRIVER "/")}}
       - ${VOLUME_DRIVER}:/data
     {{- else}}
-      - backup-data:/data
+      - backup-data:/backup
     {{- end}}
   docker-engine:
     privileged: true
