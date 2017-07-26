@@ -3,7 +3,7 @@ services:
   {{- if eq .Values.DEPLOY_SERVER "true"}}
   gocd-server:
     tty: true
-    image: webcenter/alpine-gocd-server:develop
+    image: webcenter/alpine-gocd-server:17.3.0-1
     volumes:
     {{- if eq (printf "%.1s" .Values.VOLUME_DRIVER_SERVER) "/" }}
       - ${VOLUME_DRIVER_SERVER}:/data
@@ -63,7 +63,7 @@ services:
   {{- if eq .Values.DEPLOY_AGENT "true"}}
   gocd-agent:
     tty: true
-    image: webcenter/alpine-gocd-agent:develop
+    image: webcenter/alpine-gocd-agent:17.3.0-1
     volumes:
     {{- if eq (printf "%.1s" .Values.VOLUME_DRIVER_AGENT) "/"}}
       - ${VOLUME_DRIVER_AGENT}:/data
@@ -92,7 +92,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: "true"
-    image: webcenter/rancher-cattle-metadata:develop
+    image: webcenter/rancher-cattle-metadata:1.0.1
     volumes:
       - gocd-scheduler-setting:/opt/scheduler
   docker-engine:
@@ -100,8 +100,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-    image: index.docker.io/docker:17-dind
-    command: --storage-driver=${DOCKER_DRIVER}
+    image: index.docker.io/docker:1.13-dind
     volumes:
     {{- if eq (printf "%.1s" .Values.VOLUME_DRIVER_AGENT) "/"}}
       - ${VOLUME_DRIVER_AGENT}:/data

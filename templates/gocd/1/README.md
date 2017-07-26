@@ -1,9 +1,5 @@
 # GoCD.io
 
-## Note
-
-It's the develop branch, use it to just test the last release, not for production.
-
 ### Info:
 
 This template creates one GoCD server and scale out the number of GoCD agent you need.

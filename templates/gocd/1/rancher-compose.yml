@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: GoCD
-  version: develop
+  version: 17.3.0-rancher1
   minimum_rancher_version: v1.5.0
   questions:
     - variable: "DEPLOY_SERVER"
@@ -104,18 +104,6 @@ catalog:
       required: true
       type: "string"
       default: "https://gocd-server:8154/go"
-    - variable: "DOCKER_DRIVER"
-      description: "What Docker driver storage you should use to DIND"
-      label: "Storage Docker driver"
-      required: true
-      type: enum
-      default: "overlay"
-      options:
-        - "overlay"
-        - "overlay2"
-        - "btrfs"
-        - "zfs"
-        - "devicemapper"
     - variable: "CONFD_BACKEND"
       description: "The confd backend to grab config"
       label: "Confd backend"
