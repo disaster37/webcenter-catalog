@@ -76,6 +76,7 @@ services:
       - GOCD_CONFIG_agent_key=${GOCD_AGENT_KEY}
       - GOCD_CONFIG_agent_resource_docker=${GOCD_AGENT_RESOURCE}
       - DOCKER_HOST=docker-engine:2375
+      - COMPOSE_HTTP_TIMEOUT=300
     {{- if eq .Values.DEPLOY_SERVER "true"}}
     links:
       - gocd-server:gocd-server
