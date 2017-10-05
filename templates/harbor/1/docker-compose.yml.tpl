@@ -87,9 +87,9 @@ services:
     - ui:ui
     - registry:registry
     - clair:clair
-    {{- if or (.Values.HARBOR_HTTP_PORT_EXPOSE) (and (.Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE))}}
+    {{- if or (.Values.HARBOR_HTTP_PORT_EXPOSE) (and (eq .Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE))}}
     ports:
-    {{- if and (.Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE)}}
+    {{- if and (eq .Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE)}}
     - ${HARBOR_HTTPS_PORT_EXPOSE}:443/tcp
     {{- end}}
     {{- if (.Values.HARBOR_HTTP_PORT_EXPOSE)}}
