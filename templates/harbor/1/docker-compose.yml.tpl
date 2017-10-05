@@ -27,28 +27,28 @@ volumes:
     external: false
     driver: local
 {{- else}}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/adminserver/data:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_data:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/clair/db:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_clair_db:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/db:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_db:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/registry:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_registry:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/ui/token:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_token:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/adminserver/config:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_config:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/ui/ca:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_ca:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}/setupwrapper:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_setupwrapper:
     external: true
     driver: ${HARBOR_STORAGE_DRIVER}
 {{- end}}
@@ -63,7 +63,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}_registry:/storage
     {{- else}}
@@ -85,7 +85,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
@@ -116,7 +116,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
@@ -151,7 +151,7 @@ services:
       - LDAP_PASSWORD=${HARBOR_LDAP_PASSWORD}
     stdin_open: true
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harbor/data
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harbor/data
@@ -167,7 +167,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}_adminserver_config:/etc/adminserver/config
     - ${HARBOR_STORAGE_BASE_NAME}_adminserver_data:/data
@@ -190,7 +190,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}_ui_ca:/etc/ui/ca
     - ${HARBOR_STORAGE_BASE_NAME}_ui_token:/etc/ui/token
@@ -218,7 +218,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}_db:/var/lib/mysql
     {{- else}}
@@ -239,7 +239,7 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     stdin_open: true
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}_clair_db:/var/lib/postgresql/data
     {{- else}}
@@ -261,7 +261,7 @@ services:
     - /bin/sh
     - -c
     volumes:
-    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
     - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
