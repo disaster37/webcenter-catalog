@@ -87,12 +87,14 @@ services:
     - ui:ui
     - registry:registry
     - clair:clair
+    {{- if or (.Values.HARBOR_HTTP_PORT_EXPOSE) (and (.Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE))}}
     ports:
-    {{- if and (.Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOS)}}
-    - ${HARBOR_HTTPS_PORT_EXPOS}:443/tcp
+    {{- if and (.Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE)}}
+    - ${HARBOR_HTTPS_PORT_EXPOSE}:443/tcp
     {{- end}}
     {{- if (.Values.HARBOR_HTTP_PORT_EXPOSE)}}
     - ${HARBOR_HTTP_PORT_EXPOSE}:80/tcp
+    {{- end}}
     {{- end}}
     command:
     - /harborsetup/scripts/entrypoint-proxy.sh
