@@ -35,12 +35,12 @@ catalog:
     - variable: "HARBOR_CERT_CONTEND"
       description: "The Harbor certificat contend"
       label: "SSL certificat"
-      type: "string"
+      type: "multiline"
       required: false
     - variable: "HARBOR_CERT_KEY_CONTEND"
       description: "The harbor certificat key contend"
       label: "SSL key"
-      type: "string"
+      type: "multiline"
       required: false
     - variable: "HARBOR_DB_PASSWORD"
       description: "The MySQL root password"
