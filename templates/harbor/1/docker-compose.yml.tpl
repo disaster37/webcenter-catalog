@@ -2,28 +2,28 @@ version: '2'
 volumes:
 {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
 {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
-  ${HARBOR_STORAGE_BASE_NAME}/adminserver/data:
+  ${HARBOR_STORAGE_BASE_NAME}_adminserver_data:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/clair/db:
+  ${HARBOR_STORAGE_BASE_NAME}_clair_db:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/db:
+  ${HARBOR_STORAGE_BASE_NAME}_db:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/registry:
+  ${HARBOR_STORAGE_BASE_NAME}_registry:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/ui/token:
+  ${HARBOR_STORAGE_BASE_NAME}_ui_token:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/adminserver/config:
+  ${HARBOR_STORAGE_BASE_NAME}_adminserver_config:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/ui/ca:
+  ${HARBOR_STORAGE_BASE_NAME}_ui_ca:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:
+  ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:
     external: false
     driver: local
 {{- else}}
@@ -63,8 +63,13 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - ${HARBOR_STORAGE_BASE_NAME}_registry:/storage
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/registry:/storage
+    {{- end}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -80,7 +85,11 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -107,7 +116,11 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -138,7 +151,11 @@ services:
       - LDAP_PASSWORD=${HARBOR_LDAP_PASSWORD}
     stdin_open: true
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harbor/data
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harbor/data
+    {{- end}}
     tty: true
     labels:
       io.rancher.container.hostname_override: container_name
@@ -150,9 +167,15 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - ${HARBOR_STORAGE_BASE_NAME}_adminserver_config:/etc/adminserver/config
+    - ${HARBOR_STORAGE_BASE_NAME}_adminserver_data:/data
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/adminserver/config:/etc/adminserver/config
     - ${HARBOR_STORAGE_BASE_NAME}/adminserver/data:/data
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -167,9 +190,15 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - ${HARBOR_STORAGE_BASE_NAME}_ui_ca:/etc/ui/ca
+    - ${HARBOR_STORAGE_BASE_NAME}_ui_token:/etc/ui/token
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/ui/ca:/etc/ui/ca
     - ${HARBOR_STORAGE_BASE_NAME}/ui/token:/etc/ui/token
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -189,8 +218,13 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - ${HARBOR_STORAGE_BASE_NAME}_db:/var/lib/mysql
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/db:/var/lib/mysql
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -205,8 +239,13 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     stdin_open: true
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - ${HARBOR_STORAGE_BASE_NAME}_clair_db:/var/lib/postgresql/data
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/clair/db:/var/lib/postgresql/data
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
@@ -222,7 +261,11 @@ services:
     - /bin/sh
     - -c
     volumes:
+    {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
+    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
+    {{- end}}
     tty: true
     links:
     - registry:registry
