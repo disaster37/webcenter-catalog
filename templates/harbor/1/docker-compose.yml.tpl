@@ -226,7 +226,7 @@ services:
     tty: true
     links:
     - registry:registry
-    - postgres-clair3:postgres
+    - postgres-clair:postgres
     - setupwrapper:setupwrapper
     command:
     - /harborsetup/scripts/entrypoint-clair.sh
