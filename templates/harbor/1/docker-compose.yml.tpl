@@ -69,7 +69,7 @@ services:
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/registry:/storage
-    {{- end}
+    {{- end}}
     tty: true
     links:
     - setupwrapper:setupwrapper
