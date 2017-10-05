@@ -1,0 +1,135 @@
+version: '2'
+catalog:
+  name: Harbor
+  version: 1.2.0-rev1
+  minimum_rancher_version: v1.5.0
+  questions:
+    - variable: "HARBOR_HOSTNAME"
+      description: "DNS to access on Harbor"
+      label: "Hostname"
+      required: true
+      type: "string"
+    - variable: "HARBOR_ADMIN_PASSWORD"
+      description: "The admin password"
+      label: "Admin password"
+      required: true
+      type: "password"
+    - variable: "HARBOR_SELF_REGISTRATION"
+      description: ""
+      label: "Self registration"
+      required: true
+      default: "off"
+      type: enum
+      options:
+        - "on"
+        - "off"
+    - variable: "HARBOR_URI_PROTOCOL"
+      description: ""
+      label: "Protocol"
+      required: true
+      type: enum
+      default: "https"
+      options:
+        - "https"
+        - "http"
+    - variable: "HARBOR_CERT_CONTEND"
+      description: "The Harbor certificat contend"
+      label: "SSL certificat"
+      type: "string"
+      required: false
+    - variable: "HARBOR_CERT_KEY_CONTEND"
+      description: "The harbor certificat key contend"
+      label: "SSL key"
+      type: "string"
+      required: false
+    - variable: "HARBOR_DB_PASSWORD"
+      description: "The MySQL root password"
+      label: "MySQL root password"
+      type: "password"
+      required: true
+    - variable: "HARBOR_CLAIR_DB_PASSWORD"
+      description: "The Postgres root password"
+      label: "Postgres root password"
+      type: "password"
+      required: true
+    - variable: "HARBOR_PROXY_CHAIN"
+      description: "The proxy chain"
+      label: "Proxy chain"
+      type: "string"
+      required: false
+    - variable: "HARBOR_STORAGE_DRIVER"
+      description: ""
+      label: "Storage driver"
+      required: true
+      type: "string"
+      default: "local"
+    - variable: "HARBOR_STORAGE_BASE_NAME"
+      description: "The base name for volume"
+      label: "Volume base name"
+      type: "string"
+      required: true
+      default: "harbor"
+    - variable: "HARBOR_AUTH"
+      label: "Auth mode"
+      required: true
+      type: enum
+      default: "db"
+      options:
+        - "db"
+        - "ldap"
+    - variable: "HARBOR_LDAP_URL"
+      description: ""
+      label: "LDAP URL"
+      required: false
+      type: "string"
+    - variable: "HARBOR_LDAP_USER"
+      description: "User to use to browse LDAP"
+      label: "LDAP user"
+      required: false
+      type: "string"
+    - variable: "HARBOR_LDAP_PASSWORD"
+      description: "Password to use to browse LDAP"
+      label: "LDAP password"
+      required: false
+      type: "string"
+    - variable: "HARBOR_HTTP_PORT_EXPOSE"
+      description: "The unsecure port to expose"
+      label: "Port HTTP to expose"
+      required: false
+      type: "string"
+      default: "80"
+    - variable: "HARBOR_HTTPS_PORT_EXPOSE"
+      description: "The secure port to expose"
+      label: "Port HTTPS to expose"
+      required: false
+      type: "string"
+      default: "443"
+      
+services:
+  registry:
+    scale: 1
+    start_on_create: true
+  proxy:
+    scale: 1
+    start_on_create: true
+  jobservice:
+    scale: 1
+    start_on_create: true
+  setupwrapper:
+    scale: 1
+    start_on_create: true
+  adminserver:
+    scale: 1
+    start_on_create: true
+  ui:
+    scale: 1
+    start_on_create: true
+  mysql:
+    scale: 1
+    start_on_create: true
+  postgres-clair:
+    scale: 1
+    start_on_create: true
+  clair:
+    scale: 1
+    start_on_create: true
