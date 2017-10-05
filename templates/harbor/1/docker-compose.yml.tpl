@@ -121,21 +121,21 @@ services:
   setupwrapper:
     image: webcenter/alpine-harbor-setupwrapper:test
     environment:
-      HARBORHOSTNAME: "${HARBOR_HOSTNAME}"
-      HARBOR_ADMIN_PASSWORD: "${HARBOR_ADMIN_PASSWORD}"
-      SELF_REGISTRATION: "${HARBOR_SELF_REGISTRATION}"
-      UI_URL_PROTOCOL: "${HARBOR_URI_PROTOCOL}"
-      SSL_CERT: "/harbor/harbor.crt"
-      SSL_CERT_KEY: "/harbor/harbor.key"
-      SSL_CERT_CONTEND: "${HARBOR_CERT_CONTEND}"
-      SSL_CERT_KEY_CONTEND: "${HARBOR_CERT_KEY_CONTEND}"
+      HARBORHOSTNAME: ${HARBOR_HOSTNAME}
+      HARBOR_ADMIN_PASSWORD: ${HARBOR_ADMIN_PASSWORD}
+      SELF_REGISTRATION: ${HARBOR_SELF_REGISTRATION}
+      UI_URL_PROTOCOL: ${HARBOR_URI_PROTOCOL}
+      SSL_CERT: /harbor/harbor.crt
+      SSL_CERT_KEY: /harbor/harbor.key
+      SSL_CERT_CONTEND: ${HARBOR_CERT_CONTEND}
+      SSL_CERT_KEY_CONTEND: ${HARBOR_CERT_KEY_CONTEND}
       WITH_CLAIR: 'true'
-      DB_PASSWORD: "${HARBOR_DB_PASSWORD}"
-      CLAIR_DB_PASSWORD: "${HARBOR_CLAIR_DB_PASSWORD}"
-      AUTH_MODE: "${HARBOR_AUTH}"
-      LDAP_URL: "${HARBOR_LDAP_URL}"
-      LDAP_USER: "${HARBOR_LDAP_USER}"
-      LDAP_PASSWORD: "${HARBOR_LDAP_PASSWORD}"
+      DB_PASSWORD: ${HARBOR_DB_PASSWORD}
+      CLAIR_DB_PASSWORD: ${HARBOR_CLAIR_DB_PASSWORD}
+      AUTH_MODE: ${HARBOR_AUTH}
+      LDAP_URL: ${HARBOR_LDAP_URL}
+      LDAP_USER: ${HARBOR_LDAP_USER}
+      LDAP_PASSWORD: ${HARBOR_LDAP_PASSWORD}
     stdin_open: true
     volumes:
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harbor/data
@@ -201,8 +201,8 @@ services:
   postgres-clair:
     image: postgres:9.6
     environment:
-      POSTGRES_PASSWORD: "${HARBOR_CLAIR_DB_PASSWORD}"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_PASSWORD: ${HARBOR_CLAIR_DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
     stdin_open: true
     volumes:
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
@@ -215,8 +215,8 @@ services:
   clair:
     image: vmware/clair:v2.0.1-photon
     environment:
-      http_proxy: "${HARBOR_PROXY_CHAIN}"
-      https_proxy: "${HARBOR_PROXY_CHAIN}"
+      http_proxy: ${HARBOR_PROXY_CHAIN}
+      https_proxy: ${HARBOR_PROXY_CHAIN}
     stdin_open: true
     entrypoint:
     - /bin/sh
