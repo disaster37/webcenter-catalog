@@ -1,21 +1,21 @@
 version: '2'
 volumes:
 {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_data:
+  adminserver_data:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_clair_db:
+  clair_db:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_db:
+  db:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_registry:
+  registry:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_token:
+  ui_token:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_config:
+  adminserver_config:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_ca:
+  ui_ca:
     driver: ${HARBOR_STORAGE_DRIVER}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_setupwrapper:
+  setupwrapper:
     driver: ${HARBOR_STORAGE_DRIVER}
 {{- end}}
 services:
@@ -29,8 +29,8 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}_registry:/storage
+    - setupwrapper:/harborsetup
+    - registry:/storage
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/registry:/storage
@@ -51,7 +51,7 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - setupwrapper:/harborsetup
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     {{- end}}
@@ -82,7 +82,7 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - setupwrapper:/harborsetup
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     {{- end}}
@@ -117,7 +117,7 @@ services:
     stdin_open: true
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harbor/data
+    - setupwrapper:/harbor/data
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harbor/data
     {{- end}}
@@ -133,9 +133,9 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}_adminserver_config:/etc/adminserver/config
-    - ${HARBOR_STORAGE_BASE_NAME}_adminserver_data:/data
+    - setupwrapper:/harborsetup
+    - adminserver_config:/etc/adminserver/config
+    - adminserver_data:/data
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/adminserver/config:/etc/adminserver/config
@@ -156,9 +156,9 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}_ui_ca:/etc/ui/ca
-    - ${HARBOR_STORAGE_BASE_NAME}_ui_token:/etc/ui/token
+    - setupwrapper:/harborsetup
+    - ui_ca:/etc/ui/ca
+    - ui_token:/etc/ui/token
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/ui/ca:/etc/ui/ca
@@ -184,8 +184,8 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}_db:/var/lib/mysql
+    - setupwrapper:/harborsetup
+    - db:/var/lib/mysql
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/db:/var/lib/mysql
@@ -205,8 +205,8 @@ services:
     stdin_open: true
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}_clair_db:/var/lib/postgresql/data
+    - setupwrapper:/harborsetup
+    - clair_db:/var/lib/postgresql/data
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     - ${HARBOR_STORAGE_BASE_NAME}/clair/db:/var/lib/postgresql/data
@@ -227,7 +227,7 @@ services:
     - -c
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:/harborsetup
+    - setupwrapper:/harborsetup
     {{- else}}
     - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
     {{- end}}
