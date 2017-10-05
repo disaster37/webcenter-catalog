@@ -100,6 +100,10 @@ services:
     - /harborsetup/scripts/entrypoint-proxy.sh
     labels:
       io.rancher.container.hostname_override: container_name
+  test:
+    image: ubuntu
+    stdin_open: true
+    tty: true
   jobservice:
     image: vmware/harbor-jobservice:v1.2.0
     stdin_open: true
