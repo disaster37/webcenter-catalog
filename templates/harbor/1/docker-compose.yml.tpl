@@ -23,7 +23,7 @@ volumes:
   ${HARBOR_STORAGE_BASE_NAME}_ui_ca:
     external: false
     driver: local
-  ${HARBOR_STORAGE_BASE_NAME}_setupwrapper:
+  {{.Values.HARBOR_STORAGE_BASE_NAME}}_setupwrapper:
     external: false
     driver: local
 {{- else}}
