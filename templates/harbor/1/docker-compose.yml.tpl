@@ -1,57 +1,22 @@
 version: '2'
 volumes:
 {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-{{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_data:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_clair_db:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_db:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_registry:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_token:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_config:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_ca:
-    external: false
-    driver: local
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_setupwrapper:
-    external: false
-    driver: local
-{{- else}}
-  {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_data:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_clair_db:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_db:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_registry:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_token:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_adminserver_config:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_ui_ca:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
   {{.Values.HARBOR_STORAGE_BASE_NAME}}_setupwrapper:
-    external: true
     driver: ${HARBOR_STORAGE_DRIVER}
-{{- end}}
 {{- end}}
 services:
   registry:
