@@ -91,8 +91,8 @@ services:
     {{- if and (.Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOS)}}
     - ${HARBOR_HTTPS_PORT_EXPOS}:443/tcp
     {{- end}}
-    {{- if .Values.HARBOR_HTTP_PORT_EXPOSE}}
-    - ${Values.HARBOR_HTTP_PORT_EXPOSE}:80/tcp
+    {{- if (.Values.HARBOR_HTTP_PORT_EXPOSE)}}
+    - ${HARBOR_HTTP_PORT_EXPOSE}:80/tcp
     {{- end}}
     command:
     - /harborsetup/scripts/entrypoint-proxy.sh
