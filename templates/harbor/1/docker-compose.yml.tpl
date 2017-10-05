@@ -1,6 +1,6 @@
 version: '2'
 volumes:
-{{- if neq .Values.HARBOR_STORAGE_DRIVER "mount"}}
+{{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
 {{- if eq .Values.HARBOR_STORAGE_DRIVER "local"}}
   ${HARBOR_STORAGE_BASE_NAME}/adminserver/data:
     external: false
