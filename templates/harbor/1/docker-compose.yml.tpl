@@ -75,7 +75,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
   jobservice:
-    image: vmware/harbor-jobservice:v1.2.0
+    image: vmware/harbor-jobservice:v1.2.2
     stdin_open: true
     entrypoint:
     - /bin/sh
@@ -114,6 +114,8 @@ services:
       - LDAP_URL=${HARBOR_LDAP_URL}
       - LDAP_USER=${HARBOR_LDAP_USER}
       - LDAP_PASSWORD=${HARBOR_LDAP_PASSWORD}
+      - LDAP_BASEDN=${HARBOR_LDAP_BASE_DN}
+      - LDAP_UID=${HARBOR_LDAP_UID}
     stdin_open: true
     volumes:
     {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
@@ -126,7 +128,7 @@ services:
       io.rancher.container.hostname_override: container_name
       io.rancher.container.start_once: 'true'
   adminserver:
-    image: vmware/harbor-adminserver:v1.2.0
+    image: vmware/harbor-adminserver:v1.2.2
     stdin_open: true
     entrypoint:
     - /bin/sh
@@ -149,7 +151,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
   ui:
-    image: vmware/harbor-ui:v1.2.0
+    image: vmware/harbor-ui:v1.2.2
     stdin_open: true
     entrypoint:
     - /bin/sh
@@ -177,7 +179,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
   mysql:
-    image: vmware/harbor-db:v1.2.0
+    image: vmware/harbor-db:v1.2.2
     stdin_open: true
     entrypoint:
     - /bin/sh

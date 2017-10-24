@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: Harbor
-  version: 1.2.0-rev1
+  version: 1.2.2-rev1
   minimum_rancher_version: v1.5.0
   questions:
     - variable: "HARBOR_HOSTNAME"
@@ -58,13 +58,13 @@ catalog:
       type: "string"
       required: false
     - variable: "HARBOR_STORAGE_DRIVER"
-      description: ""
+      description: "Use 'mount' if you should to mount volume on host"
       label: "Storage driver"
       required: true
       type: "string"
       default: "local"
     - variable: "HARBOR_STORAGE_BASE_NAME"
-      description: "The base name for volume"
+      description: "The base name for volume or the mount point on host"
       label: "Volume base name"
       type: "string"
       required: true
@@ -90,6 +90,16 @@ catalog:
     - variable: "HARBOR_LDAP_PASSWORD"
       description: "Password to use to browse LDAP"
       label: "LDAP password"
+      required: false
+      type: "string"
+    - variable: "HARBOR_LDAP_BASE_DN"
+      description: "Base DN to search user"
+      label: "LDAP base DN"
+      required: false
+      type: "string"
+    - variable: "HARBOR_LDAP_UID"
+      description: "UID field"
+      label: "LDAP UID"
       required: false
       type: "string"
     - variable: "HARBOR_HTTP_PORT_EXPOSE"
