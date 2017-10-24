@@ -85,8 +85,9 @@ services:
     - ${HARBOR_STORAGE_BASE_NAME}/redis:/var/lib/postgresql
     {{- end}}
     environment:
-      - DB_NAME=
-      - DB_USER=
+      - DB_NAME=gitlab
+      - DB_USER=gitlab
+      - DB_PASS=${DB_PASS}
       - DB_EXTENSION=pg_trgm
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}

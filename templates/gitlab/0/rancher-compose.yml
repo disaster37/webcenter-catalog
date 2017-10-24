@@ -34,6 +34,17 @@ catalog:
       required: false
       default: 22
       type: "string"
+    - variable: "STORAGE_DRIVER"
+      description: "Use 'mount' if you should to mount volume on host"
+      label: "Storage driver"
+      required: true
+      type: "string"
+      default: "local"
+    - variable: "STORAGE_BASE_NAME"
+      description: "The base path for persistent data"
+      label: "Path base name"
+      type: "string"
+      required: false
     - variable: "GITLAB_SECRETS_DB_KEY_BASE"
       description: "The secret for CI secret variable"
       label: "Secret DB key"
@@ -47,6 +58,16 @@ catalog:
     - variable: "GITLAB_SECRETS_OTP_KEY_BASE"
       description: "The secret for OTP"
       label: "Secret OTP key"
+      required: true
+      type: "password"
+    - variable: "GITLAB_ROOT_PASSWORD"
+      description: "The root password"
+      label: "Root password"
+      required: true
+      type: "password"
+    - variable: "GITLAB_DB_PASSWORD"
+      description: "The DB password"
+      label: "DB password"
       required: true
       type: "password"
     - variable: "GITLAB_TIMEOUT"
@@ -71,11 +92,6 @@ catalog:
       options:
         - true
         - false
-    - variable: "GITLAB_ROOT_PASSWORD"
-      description: "The root password"
-      label: "Root password"
-      required: true
-      type: "password"
     - variable: "SMTP_HOST"
       description: "The SMTP host"
       label: "SMTP host"

@@ -64,11 +64,10 @@ catalog:
       type: "string"
       default: "local"
     - variable: "HARBOR_STORAGE_BASE_NAME"
-      description: "The base name for volume or the mount point on host"
-      label: "Volume base name"
+      description: "The base path for persistent data"
+      label: "Base path"
       type: "string"
-      required: true
-      default: "harbor"
+      required: false
     - variable: "HARBOR_AUTH"
       label: "Auth mode"
       required: true
