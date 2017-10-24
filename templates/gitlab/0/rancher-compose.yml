@@ -25,13 +25,13 @@ catalog:
     - variable: "PUBLISH_PORT_HTTP"
       description: "HTTP port to expose on host. Empty to not expose."
       label: "HTTP port:"
-      required: true
+      required: false
       default: 80
       type: "string"
-    - variable: "PUBLISH_PORT_HTTP"
+    - variable: "PUBLISH_PORT_SSH"
       description: "SSH port to expose on host. Empty to not expose"
       label: "SSH port:"
-      required: true
+      required: false
       default: 22
       type: "string"
     - variable: "GITLAB_SECRETS_DB_KEY_BASE"
