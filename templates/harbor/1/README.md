@@ -24,6 +24,8 @@ Fils out the form
 Click deploy.
 
 Harbor can now be accessed on port `443` through `https` with your hostname.
+
+You can change or optimise LDAP setting from Harbor UI.
  
 
 
