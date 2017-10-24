@@ -18,7 +18,7 @@ catalog:
         Use https or not when you use URL to access to Gitlab
       default: true
       required: true
-      type: "string"
+      type: "enum"
       options:
         - true
         - false
@@ -67,7 +67,7 @@ catalog:
         Allow to use self signed certificat
       default: true
       required: true
-      type: "string"
+      type: "enum"
       options:
         - true
         - false
@@ -97,7 +97,7 @@ catalog:
         Allow to use LDAP to auth user
       default: false
       required: true
-      type: "string"
+      type: "enum"
       options:
         - true
         - false
@@ -142,7 +142,7 @@ catalog:
       label: "LDAP is Active Directory"
       default: true
       required: true
-      type: "string"
+      type: "enum"
       options:
         - true
         - false
