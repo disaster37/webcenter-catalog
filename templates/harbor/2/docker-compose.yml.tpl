@@ -97,7 +97,7 @@ services:
     labels:
       io.rancher.container.hostname_override: container_name
   setupwrapper:
-    image: webcenter/alpine-harbor-setupwrapper:develop
+    image: webcenter/alpine-harbor-setupwrapper:1.2.2
     environment:
       - HARBORHOSTNAME=${HARBOR_HOSTNAME}
       - HARBOR_ADMIN_PASSWORD=${HARBOR_ADMIN_PASSWORD}
