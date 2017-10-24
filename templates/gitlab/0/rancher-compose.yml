@@ -65,7 +65,7 @@ catalog:
       label: "Root password"
       required: true
       type: "password"
-    - variable: "GITLAB_DB_PASSWORD"
+    - variable: "DB_PASS"
       description: "The DB password"
       label: "DB password"
       required: true
