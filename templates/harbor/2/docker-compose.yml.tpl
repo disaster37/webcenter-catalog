@@ -224,6 +224,7 @@ services:
       - http_proxy=${HARBOR_PROXY_CHAIN}
       - https_proxy=${HARBOR_PROXY_CHAIN}
     stdin_open: true
+    cpu_quota: 150000
     entrypoint:
       - /bin/sh
       - -c

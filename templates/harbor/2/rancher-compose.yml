@@ -113,27 +113,81 @@ services:
   registry:
     scale: 1
     start_on_create: true
+    health_check:
+      port: 5000
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   proxy:
     scale: 1
     start_on_create: true
+    port: 80
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   jobservice:
     scale: 1
     start_on_create: true
+    health_check:
+      port: 80
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   setupwrapper:
     scale: 1
     start_on_create: true
   adminserver:
     scale: 1
     start_on_create: true
+    health_check:
+      port: 80
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   ui:
     scale: 1
     start_on_create: true
+    health_check:
+      port: 80
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   mysql:
     scale: 1
     start_on_create: true
+    health_check:
+      port: 3306
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   postgres-clair:
     scale: 1
     start_on_create: true
+    health_check:
+      port: 5432
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
   clair:
     scale: 1
     start_on_create: true
+    port: 6062
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
