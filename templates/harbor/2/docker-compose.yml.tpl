@@ -1,22 +1,22 @@
 version: '2'
+{{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
 volumes:
-{{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
   adminserver_data:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   clair_db:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   db:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   registry:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   ui_token:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   adminserver_config:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   ui_ca:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   setupwrapper:
-    driver: ${HARBOR_STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
 {{- end}}
 services:
   registry:
@@ -25,75 +25,75 @@ services:
       GODEBUG: netdns=cgo
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
-    - registry:/storage
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
+      - registry:/storage
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}/registry:/storage
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/registry:/storage
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
-    - ui:ui
+      - setupwrapper:setupwrapper
+      - ui:ui
     command:
-    - /harborsetup/scripts/entrypoint-registry.sh
+      - /harborsetup/scripts/entrypoint-registry.sh
     labels:
       io.rancher.container.hostname_override: container_name
   proxy:
     image: vmware/nginx-photon:1.11.13
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
-    - ui:ui
-    - registry:registry
-    - clair:clair
+      - setupwrapper:setupwrapper
+      - ui:ui
+      - registry:registry
+      - clair:clair
     {{- if or (.Values.HARBOR_HTTP_PORT_EXPOSE) (and (eq .Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE))}}
     ports:
     {{- if and (eq .Values.HARBOR_URI_PROTOCOL "https") (.Values.HARBOR_HTTPS_PORT_EXPOSE)}}
-    - ${HARBOR_HTTPS_PORT_EXPOSE}:443/tcp
+      - ${HARBOR_HTTPS_PORT_EXPOSE}:443/tcp
     {{- end}}
     {{- if (.Values.HARBOR_HTTP_PORT_EXPOSE)}}
-    - ${HARBOR_HTTP_PORT_EXPOSE}:80/tcp
+      - ${HARBOR_HTTP_PORT_EXPOSE}:80/tcp
     {{- end}}
     {{- end}}
     command:
-    - /harborsetup/scripts/entrypoint-proxy.sh
+      - /harborsetup/scripts/entrypoint-proxy.sh
     labels:
       io.rancher.container.hostname_override: container_name
   jobservice:
     image: vmware/harbor-jobservice:v1.2.2
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
-    - ui:ui
-    - adminserver:adminserver
-    - clair:clair
+      - setupwrapper:setupwrapper
+      - ui:ui
+      - adminserver:adminserver
+      - clair:clair
     command:
-    - /harborsetup/scripts/entrypoint-jobservice.sh
+      - /harborsetup/scripts/entrypoint-jobservice.sh
     labels:
       io.rancher.container.hostname_override: container_name
   setupwrapper:
@@ -118,10 +118,10 @@ services:
       - LDAP_UID=${HARBOR_LDAP_UID}
     stdin_open: true
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harbor/data
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harbor/data
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harbor/data
+      - ${VOLUME_DRIVER}/setupwrapper:/harbor/data
     {{- end}}
     tty: true
     labels:
@@ -131,72 +131,72 @@ services:
     image: vmware/harbor-adminserver:v1.2.2
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
-    - adminserver_config:/etc/adminserver/config
-    - adminserver_data:/data
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
+      - adminserver_config:/etc/adminserver/config
+      - adminserver_data:/data
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}/adminserver/config:/etc/adminserver/config
-    - ${HARBOR_STORAGE_BASE_NAME}/adminserver/data:/data
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/adminserver/config:/etc/adminserver/config
+      - ${VOLUME_DRIVER}/adminserver/data:/data
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
+      - setupwrapper:setupwrapper
     command:
-    - /harborsetup/scripts/entrypoint-adminserver.sh
+      - /harborsetup/scripts/entrypoint-adminserver.sh
     labels:
       io.rancher.container.hostname_override: container_name
   ui:
     image: vmware/harbor-ui:v1.2.2
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
-    - ui_ca:/etc/ui/ca
-    - ui_token:/etc/ui/token
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
+      - ui_ca:/etc/ui/ca
+      - ui_token:/etc/ui/token
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}/ui/ca:/etc/ui/ca
-    - ${HARBOR_STORAGE_BASE_NAME}/ui/token:/etc/ui/token
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/ui/ca:/etc/ui/ca
+      - ${VOLUME_DRIVER}/ui/token:/etc/ui/token
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
-    - registry:registry
-    - adminserver:adminserver
-    - postgres-clair:postgres
-    - mysql:mysql
-    - clair:clair
+      - setupwrapper:setupwrapper
+      - registry:registry
+      - adminserver:adminserver
+      - postgres-clair:postgres
+      - mysql:mysql
+      - clair:clair
     command:
-    - /harborsetup/scripts/entrypoint-ui.sh
+      - /harborsetup/scripts/entrypoint-ui.sh
     labels:
       io.rancher.container.hostname_override: container_name
   mysql:
     image: vmware/harbor-db:v1.2.2
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
-    - db:/var/lib/mysql
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
+      - db:/var/lib/mysql
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}/db:/var/lib/mysql
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/db:/var/lib/mysql
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
+      - setupwrapper:setupwrapper
     command:
-    - /harborsetup/scripts/entrypoint-mysql.sh
+      - /harborsetup/scripts/entrypoint-mysql.sh
     labels:
       io.rancher.container.hostname_override: container_name
   postgres-clair:
@@ -206,16 +206,16 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     stdin_open: true
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
-    - clair_db:/var/lib/postgresql/data
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
+      - clair_db:/var/lib/postgresql/data
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
-    - ${HARBOR_STORAGE_BASE_NAME}/clair/db:/var/lib/postgresql/data
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/clair/db:/var/lib/postgresql/data
     {{- end}}
     tty: true
     links:
-    - setupwrapper:setupwrapper
+      - setupwrapper:setupwrapper
     labels:
       io.rancher.container.hostname_override: container_name
   clair:
@@ -225,21 +225,21 @@ services:
       - https_proxy=${HARBOR_PROXY_CHAIN}
     stdin_open: true
     entrypoint:
-    - /bin/sh
-    - -c
+      - /bin/sh
+      - -c
     volumes:
-    {{- if ne .Values.HARBOR_STORAGE_DRIVER "mount"}}
-    - setupwrapper:/harborsetup
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
+      - setupwrapper:/harborsetup
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/setupwrapper:/harborsetup
+      - ${VOLUME_DRIVER}/setupwrapper:/harborsetup
     {{- end}}
     tty: true
     links:
-    - registry:registry
-    - postgres-clair:postgres
-    - setupwrapper:setupwrapper
+      - registry:registry
+      - postgres-clair:postgres
+      - setupwrapper:setupwrapper
     command:
-    - /harborsetup/scripts/entrypoint-clair.sh
+      - /harborsetup/scripts/entrypoint-clair.sh
     labels:
       io.rancher.container.hostname_override: container_name
   

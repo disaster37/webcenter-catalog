@@ -57,17 +57,12 @@ catalog:
       label: "Proxy chain"
       type: "string"
       required: false
-    - variable: "HARBOR_STORAGE_DRIVER"
-      description: "Use 'mount' if you should to mount volume on host"
-      label: "Storage driver"
+    - variable: "VOLUME_DRIVER"
+      description: "The driver name or the path base mount point"
+      label: "Storage driver / Mount base path"
       required: true
       type: "string"
       default: "local"
-    - variable: "HARBOR_STORAGE_BASE_NAME"
-      description: "The base path for persistent data"
-      label: "Base path"
-      type: "string"
-      required: false
     - variable: "HARBOR_AUTH"
       label: "Auth mode"
       required: true

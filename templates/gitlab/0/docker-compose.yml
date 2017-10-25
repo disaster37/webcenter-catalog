@@ -1,22 +1,22 @@
 version: '2'
+{{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
 volumes:
-{{- if ne .Values.STORAGE_DRIVER "mount"}}
   gitlab_data:
-    driver: ${STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   redis_data:
-    driver: ${STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
   postgres_data:
-    driver: ${STORAGE_DRIVER}
+    driver: ${VOLUME_DRIVER}
 {{- end}}
 services:
   gitlab:
     tty: true
     image: sameersbn/gitlab:10.0.4
     volumes:
-    {{- if ne .Values.STORAGE_DRIVER "mount"}}
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
       - gitlab_data:/home/git/data
     {{- else}}
-      - ${HARBOR_STORAGE_BASE_NAME}/data:/home/git/data
+      - ${VOLUME_DRIVER}/data:/home/git/data
     {{- end}}
     environment:
       - GITLAB_BACKUP_SCHEDULE=
@@ -67,10 +67,10 @@ services:
   redis:
     image: redis:3
     volumes:
-    {{- if ne .Values.STORAGE_DRIVER "mount"}}
+    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
       - redis_data:/var/lib/redis
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/redis:/var/lib/redis
+    - ${VOLUME_DRIVER}/redis:/var/lib/redis
     {{- end}}
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
@@ -79,10 +79,10 @@ services:
     tty: true
     image: sameersbn/postgresql:9.6-2
     volumes:
-    {{- if ne .Values.STORAGE_DRIVER "mount"}}
+   {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
       - postgres_data:/var/lib/postgresql
     {{- else}}
-    - ${HARBOR_STORAGE_BASE_NAME}/redis:/var/lib/postgresql
+      - ${VOLUME_DRIVER}/redis:/var/lib/postgresql
     {{- end}}
     environment:
       - DB_NAME=gitlab
