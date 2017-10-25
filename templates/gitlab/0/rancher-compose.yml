@@ -87,6 +87,16 @@ catalog:
       options:
         - true
         - false
+    - variable: "GITLAB_SIGNUP_ENABLED"
+      label: "Enable signup user"
+      description: |
+        Allow user to register themself
+      default: false
+      required: true
+      type: "enum"
+      options:
+        - true
+        - false
     - variable: "SMTP_HOST"
       description: "The SMTP host"
       label: "SMTP host"
