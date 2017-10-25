@@ -179,7 +179,6 @@ services:
       strategy: recreate
       response_timeout: 5000
       healthy_threshold: 2
-      request_line: HEAD "/" "HTTP/1.0"
   redis:
     scale: 1
     start_on_create: true
