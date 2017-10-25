@@ -123,7 +123,8 @@ services:
   proxy:
     scale: 1
     start_on_create: true
-    port: 80
+    health_check:
+      port: 80
       interval: 30000
       unhealthy_threshold: 3
       strategy: recreate
@@ -185,7 +186,8 @@ services:
   clair:
     scale: 1
     start_on_create: true
-    port: 6062
+    health_check:
+      port: 6062
       interval: 30000
       unhealthy_threshold: 3
       strategy: recreate
