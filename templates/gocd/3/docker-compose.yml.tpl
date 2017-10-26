@@ -18,6 +18,9 @@ services:
       - CONFD_BACKEND=${CONFD_BACKEND}
       - CONFD_NODES=${CONFD_NODES}
       - CONFD_PREFIX_KEY=${CONFD_PREFIX}
+      - http_proxy=${PROXY_CHAIN}
+      - https_proxy=${PROXY_CHAIN}
+      - no_proxy="localhost, 127.0.0.1"
       {{- if eq .Values.GOCD_AGENT_PACKAGE "true"}}
       - GOCD_PLUGIN_script-executor=https://github.com/gocd-contrib/script-executor-task/releases/download/0.3/script-executor-0.3.0.jar
       - GOCD_PLUGIN_docker-task=https://github.com/manojlds/gocd-docker/releases/download/0.1.27/docker-task-assembly-0.1.27.jar
@@ -103,6 +106,10 @@ services:
       io.rancher.container.hostname_override: container_name
     image: index.docker.io/docker:17-dind
     command: --storage-driver=${DOCKER_DRIVER}
+    environment:
+      - HTTP_PROXY=${PROXY_CHAIN}
+      - HTTPS_PROXY=${PROXY_CHAIN}
+      - NO_PROXY="localhost, 127.0.0.1"
     volumes:
     {{- if eq (printf "%.1s" .Values.VOLUME_DRIVER_AGENT) "/"}}
       - ${VOLUME_DRIVER_AGENT}:/data

@@ -71,6 +71,11 @@ catalog:
       options:
         - "true"
         - "false"
+    - variable: "PROXY_CHAIN"
+      description: "The proxy chain to download plugin and for docker engine"
+      label: "Proxy chain"
+      type: "string"
+      required: false
     - variable: "VOLUME_DRIVER_SERVER"
       description: "Docker driver to store volume or base path for GoCD server"
       label: "Volume drver / Path for server"
