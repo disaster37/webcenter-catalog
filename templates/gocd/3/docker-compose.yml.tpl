@@ -80,6 +80,9 @@ services:
       - GOCD_CONFIG_agent_resource_docker=${GOCD_AGENT_RESOURCE}
       - DOCKER_HOST=docker-engine:2375
       - COMPOSE_HTTP_TIMEOUT=300
+      - http_proxy=${PROXY_CHAIN}
+      - https_proxy=${PROXY_CHAIN}
+      - no_proxy="localhost, 127.0.0.1, docker-engine"
     {{- if eq .Values.DEPLOY_SERVER "true"}}
     links:
       - gocd-server:gocd-server
