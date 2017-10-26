@@ -1,0 +1,8 @@
+name: Harbor Registry
+description: |
+  Enterprise Class Container Registry [by VMware]
+version: 1.2.2-rev1
+category: Private Container Registry
+maintainer: "Sebastien Langoureaux <linuxworkgroup@gmail.com>"
+license: Apache License 2.0 
+projectURL: https://github.com/vmware/harbor
