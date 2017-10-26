@@ -1,0 +1,203 @@
+version: '2'
+catalog:
+  name: Gitlab Community
+  version: 10.0.4-rev1
+  description: |
+    Gitlab CE is a free GitHub alternative
+  minimum_rancher_version: v1.5.0
+  questions:
+    - variable: "GITLAB_HOSTNAME"
+      description: "Gitlab hostname (without uri scheme http:// or https://)"
+      label: "Hostname:"
+      required: true
+      default: "git.example.com"
+      type: "string"
+    - variable: "GITLAB_OVER_HTTPS"
+      label: "Use https to access on Gitlab"
+      description: |
+        Use https or not when you use URL to access to Gitlab
+      default: true
+      required: true
+      type: "enum"
+      options:
+        - true
+        - false
+    - variable: "PUBLISH_PORT_HTTP"
+      description: "HTTP port to expose on host. Empty to not expose."
+      label: "HTTP port:"
+      required: false
+      default: 80
+      type: "string"
+    - variable: "PUBLISH_PORT_SSH"
+      description: "SSH port to expose on host. Empty to not expose"
+      label: "SSH port:"
+      required: false
+      default: 22
+      type: "string"
+    - variable: "VOLUME_DRIVER"
+      description: "The driver name or the path base mount point"
+      label: "Storage driver / Mount base path"
+      required: true
+      type: "string"
+      default: "local"
+    - variable: "GITLAB_SECRETS_DB_KEY_BASE"
+      description: "The secret for CI secret variable"
+      label: "Secret DB key"
+      required: true
+      type: "password"
+    - variable: "GITLAB_SECRETS_SECRET_KEY_BASE"
+      description: "The secret for session secret"
+      label: "Secret key"
+      required: true
+      type: "password"
+    - variable: "GITLAB_SECRETS_OTP_KEY_BASE"
+      description: "The secret for OTP"
+      label: "Secret OTP key"
+      required: true
+      type: "password"
+    - variable: "GITLAB_ROOT_PASSWORD"
+      description: "The root password"
+      label: "Root password"
+      required: true
+      type: "password"
+    - variable: "DB_PASS"
+      description: "The DB password"
+      label: "DB password"
+      required: true
+      type: "password"
+    - variable: "GITLAB_TIMEOUT"
+      description: "The request timeout"
+      label: "Request timeout"
+      required: true
+      type: "string"
+      default: 60
+    - variable: "GITLAB_TIMEZONE"
+      description: "The timezone"
+      label: "Timezone"
+      required: true
+      type: "string"
+      default: Europe/Paris
+    - variable: "SSL_SELF_SIGNED"
+      label: "SSL self signed"
+      description: |
+        Allow to use self signed certificat
+      default: true
+      required: true
+      type: "enum"
+      options:
+        - true
+        - false
+    - variable: "GITLAB_SIGNUP_ENABLED"
+      label: "Enable signup user"
+      description: |
+        Allow user to register themself
+      default: false
+      required: true
+      type: "enum"
+      options:
+        - true
+        - false
+    - variable: "SMTP_HOST"
+      description: "The SMTP host"
+      label: "SMTP host"
+      required: false
+      type: "string"
+    - variable: "SMTP_USER"
+      description: "The SMTP user"
+      label: "SMTP user"
+      required: false
+      type: "string"
+    - variable: "SMTP_PASS"
+      description: "The SMTP password"
+      label: "SMTP password"
+      required: false
+      type: "password"
+    - variable: "LDAP_ENABLE"
+      label: "LDAP enable"
+      description: |
+        Allow to use LDAP to auth user
+      default: false
+      required: true
+      type: "enum"
+      options:
+        - true
+        - false
+    - variable: "LDAP_HOST"
+      description: "The LDAP host"
+      label: "LDAP host"
+      required: false
+      type: "string"
+    - variable: "LDAP_BIND_DN"
+      description: "The LDAP user on DN format"
+      label: "LDAP bind DN"
+      required: false
+      type: "string"
+    - variable: "LDAP_PASS"
+      description: "The LDAP password"
+      label: "LDAP password"
+      required: false
+      type: "password"
+    - variable: "LDAP_TIMEOUT"
+      description: "The LDAP tiemout"
+      label: "LDAP timeout"
+      required: false
+      default: 10
+      type: "string"
+    - variable: "LDAP_BASE"
+      description: "The LDAP base DN to search users"
+      label: "LDAP base"
+      required: false
+      type: "string"
+    - variable: "LDAP_USER_FILTER"
+      description: "The LDAP filter"
+      label: "LDAP filter"
+      required: false
+      type: "string"
+    - variable: "LDAP_UID"
+      description: "The LDAP UID"
+      label: "LDAP UID"
+      required: false
+      type: "string"
+      default: sAMAccountName
+    - variable: "LDAP_ACTIVE_DIRECTORY"
+      label: "LDAP is Active Directory"
+      default: true
+      required: true
+      type: "enum"
+      options:
+        - true
+        - false
+
+services:
+  gitlab:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 80
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
+  redis:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 6379
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 5432
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
+
+

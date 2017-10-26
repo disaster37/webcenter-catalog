@@ -1,7 +1,7 @@
 name: Gitlab Community
 description: |
   Gitlab CE is a free GitHub alternative
-version: latest
+version: 10.0.4-rev1
 category: Versioning
 maintainer: "Sebastien Langoureaux <linuxworkgroup@gmail.com>"
 license: MIT License 
