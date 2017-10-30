@@ -46,6 +46,7 @@ services:
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
+  {{- end}}
   {{- if eq .Values.DEPLOY_AGENT "true"}}
   gocd-agent:
     tty: true

@@ -15,15 +15,15 @@ services:
       {{- end}}
     {{- end}}
     environment:
-      - MINIO_CONFIG_accesskey=${MINIO_ACCESS_KEY}
-      - MINIO_CONFIG_secretkey=${MINIO_SECRET_KEY}
+      - MINIO_CONFIG_minio.access.key=${MINIO_ACCESS_KEY}
+      - MINIO_CONFIG_minio.secret.key=${MINIO_SECRET_KEY}
       - CONFD_BACKEND=${CONFD_BACKEND}
       - CONFD_NODES=${CONFD_NODES}
       - CONFD_PREFIX_KEY=${CONFD_PREFIX}
       {{- range $idx, $e := atoi .Values.MINIO_DISKS | until }}
       - MINIO_DISKS_{{$idx}}=disk{{$idx}}
       {{- end}}
-    {{- if (.Values.PUBLISH_PORT)}}
+    {{- if (ne .Values.DEPLOY_LB "true") and .Values.PUBLISH_PORT}}
     ports:
       - ${PUBLISH_PORT}:9000
     {{- end}}
@@ -40,6 +40,23 @@ services:
     image: webcenter/rancher-cattle-metadata:1.0.1
     volumes:
       - minio-scheduler-setting:/opt/scheduler
+  {{- if eq .Values.DEPLOY_LB "true"}}
+  lb:
+    image: rancher/lb-service-haproxy:v0.6.2
+    {{- if .Values.PUBLISH_PORT}}
+    ports:
+      - ${PUBLISH_PORT}:9000/tcp
+    {{- else}}
+    expose:
+      - 9000:9000/tcp
+    {{- end}}
+    links:
+      - minio-server:minio-server
+    labels:
+      io.rancher.container.agent.role: environmentAdmin
+      io.rancher.container.create_agent: 'true'
+  {{- end}}
+
 volumes:
   minio-scheduler-setting:
     driver: local
