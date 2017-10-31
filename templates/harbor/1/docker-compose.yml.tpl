@@ -223,6 +223,7 @@ services:
     environment:
       - http_proxy=${HARBOR_PROXY_CHAIN}
       - https_proxy=${HARBOR_PROXY_CHAIN}
+      - no_proxy=localhost, 127.0.0.1, rancher-metadata
     stdin_open: true
     entrypoint:
     - /bin/sh
