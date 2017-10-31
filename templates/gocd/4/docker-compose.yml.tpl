@@ -50,7 +50,7 @@ services:
   {{- if eq .Values.DEPLOY_AGENT "true"}}
   gocd-agent:
     tty: true
-    image: webcenter/alpine-gocd-agent:17.10.0-1
+    image: webcenter/alpine-gocd-agent:17.10.0-2
     volumes:
     {{- if eq (printf "%.1s" .Values.VOLUME_DRIVER_AGENT) "/"}}
       - ${VOLUME_DRIVER_AGENT}:/data
