@@ -10,6 +10,9 @@ services:
     {{- else}}
       - gocd-server-data:/data
     {{- end}}
+    {{- if (.Values.CA_PATH)}}
+      - ${CA_PATH}://usr/local/share/ca-certificates:ro
+    {{- end}}
     environment:
       - GOCD_CONFIG_memory=${GOCD_SERVER_MEMORY}
       - GOCD_CONFIG_agentkey=${GOCD_AGENT_KEY}
@@ -57,6 +60,9 @@ services:
     {{- else}}
       - gocd-agent-data:/data
     {{- end}}
+    {{- if (.Values.CA_PATH)}}
+      - ${CA_PATH}://usr/local/share/ca-certificates:ro
+    {{- end}}
       - gocd-scheduler-setting:/opt/scheduler
     environment:
       - GOCD_CONFIG_memory=${GOCD_AGENT_MEMORY}
@@ -92,7 +98,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
     image: index.docker.io/docker:17-dind
-    command: --storage-driver=${DOCKER_DRIVER}
+    command: update-ca-certificates && dockerd-entrypoint.sh --storage-driver=${DOCKER_DRIVER}
     environment:
       - HTTP_PROXY=${PROXY_CHAIN}
       - HTTPS_PROXY=${PROXY_CHAIN}
@@ -102,6 +108,9 @@ services:
       - ${VOLUME_DRIVER_AGENT}:/data
     {{- else}}
       - gocd-agent-data:/data
+    {{- end}}
+    {{- if (.Values.CA_PATH)}}
+      - ${CA_PATH}://usr/local/share/ca-certificates:ro
     {{- end}}
   {{- end}}
   
