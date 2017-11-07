@@ -57,7 +57,7 @@ services:
       - ${PUBLISH_PORT_HTTP}:80
       {{- end}}
       {{- if (.Values.PUBLISH_PORT_SSH)}}
-      - ${PUBLISH_PORT_SSH}:${PRIVATE_PORT_SSH}
+      - ${PUBLISH_PORT_SSH}:22
       {{- end}}
     {{- end}}
     links:
