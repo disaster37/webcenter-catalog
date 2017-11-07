@@ -98,6 +98,7 @@ services:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
     image: index.docker.io/docker:17-dind
+    network_mode: bridge
     entrypoint: /bin/sh -c
     command: update-ca-certificates && dockerd-entrypoint.sh --storage-driver=${DOCKER_DRIVER}
     environment:

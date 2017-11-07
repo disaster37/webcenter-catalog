@@ -28,6 +28,12 @@ catalog:
       required: false
       default: 80
       type: "string"
+    - variable: "PRIVATE_PORT_SSH"
+      description: "SSH port display in UI (public port to access on git over SSH)"
+      label: "SSH private port:"
+      required: true
+      default: 22
+      type: "string"
     - variable: "PUBLISH_PORT_SSH"
       description: "SSH port to expose on host. Empty to not expose"
       label: "SSH port:"

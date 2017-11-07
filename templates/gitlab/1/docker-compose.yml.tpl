@@ -21,6 +21,7 @@ services:
     environment:
       - GITLAB_BACKUP_SCHEDULE=
       - GITLAB_HOST=${GITLAB_HOSTNAME}
+      - GITLAB_SSH_PORT=${PRIVATE_PORT_SSH}
       - GITLAB_HTTPS=${GITLAB_OVER_HTTPS}
       {{- if (.Values.PUBLISH_PORT_SSH)}}
       - GITLAB_SSH_PORT=${PUBLISH_PORT_SSH}
@@ -56,7 +57,7 @@ services:
       - ${PUBLISH_PORT_HTTP}:80
       {{- end}}
       {{- if (.Values.PUBLISH_PORT_SSH)}}
-      - ${PUBLISH_PORT_SSH}:22
+      - ${PUBLISH_PORT_SSH}:${PRIVATE_PORT_SSH}
       {{- end}}
     {{- end}}
     links:
