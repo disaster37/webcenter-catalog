@@ -83,7 +83,7 @@ services:
    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
       - postgres_data:/var/lib/postgresql
     {{- else}}
-      - ${VOLUME_DRIVER}/redis:/var/lib/postgresql
+      - ${VOLUME_DRIVER}/postgres:/var/lib/postgresql
     {{- end}}
     environment:
       - DB_NAME=gitlab
