@@ -47,9 +47,9 @@ services:
     stdin_open: false
     volumes:
     {{- if (contains .Values.VOLUME_DRIVER "/")}}
-      - ${VOLUME_DRIVER}:/data
+      - ${VOLUME_DRIVER}:/backup
     {{- else}}
-      - backup-data:/data
+      - backup-data:/backup
     {{- end}}
   docker-engine:
     privileged: true
@@ -59,7 +59,7 @@ services:
     image: index.docker.io/docker:1.13-dind
     volumes:
     {{- if (contains .Values.VOLUME_DRIVER "/")}}
-      - ${VOLUME_DRIVER}:/data
+      - ${VOLUME_DRIVER}:/backup
     {{- else}}
       - backup-data:/backup
     {{- end}}
