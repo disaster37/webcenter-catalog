@@ -1,7 +1,7 @@
 version: '2'
 catalog:
   name: GoCD
-  version: 17.9.0-rancher1
+  version: 17.10.0-rev1
   minimum_rancher_version: v1.5.0
   questions:
     - variable: "DEPLOY_SERVER"
@@ -88,15 +88,6 @@ catalog:
       type: "string"
       required: true
       default: "local"
-    - variable: "DEPLOY_LB"
-      description: "Deploy Loadbalancer"
-      label: "Deploy Loadbalancer"
-      required: true
-      type: enum
-      default: "true"
-      options:
-        - "true"
-        - "false"
     - variable: "PUBLISH_PORT"
       description: "Set port if you want publish external port for GoCD server or Loadbalancer"
       label: "Publish port"
@@ -153,20 +144,3 @@ services:
       request_line: ''
       healthy_threshold: 2
       response_timeout: 5000
-  lb:
-    scale: 1
-    start_on_create: true
-    lb_config:
-      certs: []
-      port_rules:
-      - priority: 1
-        protocol: http
-        service: gocd-server
-        source_port: 8153
-        target_port: 8153
-    health_check:
-      response_timeout: 2000
-      healthy_threshold: 2
-      port: 42
-      unhealthy_threshold: 3
-      interval: 2000

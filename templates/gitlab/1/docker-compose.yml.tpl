@@ -21,6 +21,7 @@ services:
     environment:
       - GITLAB_BACKUP_SCHEDULE=
       - GITLAB_HOST=${GITLAB_HOSTNAME}
+      - GITLAB_SSH_PORT=${PRIVATE_PORT_SSH}
       - GITLAB_HTTPS=${GITLAB_OVER_HTTPS}
       {{- if (.Values.PUBLISH_PORT_SSH)}}
       - GITLAB_SSH_PORT=${PUBLISH_PORT_SSH}
@@ -83,7 +84,7 @@ services:
    {{- if ne (printf "%.1s" .Values.VOLUME_DRIVER) "/" }}
       - postgres_data:/var/lib/postgresql
     {{- else}}
-      - ${VOLUME_DRIVER}/redis:/var/lib/postgresql
+      - ${VOLUME_DRIVER}/postgres:/var/lib/postgresql
     {{- end}}
     environment:
       - DB_NAME=gitlab

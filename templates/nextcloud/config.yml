@@ -1,0 +1,8 @@
+name: NextCloud
+description: |
+  Enterprise File Sync and Share
+version: 12.0.X-rev1
+category: File Synchronisation
+maintainer: "Sebastien Langoureaux <linuxworkgroup@gmail.com>"
+license: GNU AFFERO GENERAL PUBLIC LICENSE 
+projectURL: https://nextcloud.com/

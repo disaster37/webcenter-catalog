@@ -1,0 +1,65 @@
+version: '2'
+catalog:
+  name: NextCloud
+  version: 12.0.X-rev1
+  description: |
+    Enterprise File Sync and Share
+  minimum_rancher_version: v1.5.0
+  questions:
+    - variable: "NEXTCLOUD_HOSTNAME"
+      description: "Public DNS to connect on NexCloud (without uri scheme http:// or https://)"
+      label: "Public DNS:"
+      required: true
+      default: "nextcloud.example.com"
+      type: "string"
+    - variable: "ADMIN_USER"
+      label: "The admin login"
+      default: "admin"
+      required: true
+      type: "string"
+    - variable: "ADMIN_PASSWORD"
+      description: "The admin password"
+      label: "Admin password"
+      required: true
+      type: "password"
+    - variable: "DB_PASSWORD"
+      description: "The DB password"
+      label: "DB password"
+      required: true
+      type: "password"
+    - variable: "PUBLISH_PORT_HTTP"
+      description: "HTTP port to expose on host. Empty to not expose."
+      label: "HTTP port:"
+      required: false
+      default: 8888
+      type: "string"
+    - variable: "VOLUME_DRIVER"
+      description: "The driver name or the path base mount point"
+      label: "Storage driver / Mount base path"
+      required: true
+      type: "string"
+      default: "local"
+
+services:
+  nextcloud:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 8888
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
+  postgres:
+    scale: 1
+    start_on_create: true
+    health_check:
+      port: 5432
+      interval: 30000
+      unhealthy_threshold: 3
+      strategy: recreate
+      response_timeout: 5000
+      healthy_threshold: 2
+
+
