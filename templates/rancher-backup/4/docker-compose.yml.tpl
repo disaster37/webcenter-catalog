@@ -11,6 +11,8 @@ services:
       - BACKUP_DUPLICITY_remove-all-inc-of-but-n-full=${BK_KEEP_FULL_CHAIN}
       - BACKUP_DUPLICITY_volsize=${VOLUME_SIZE}
       - BACKUP_DUPLICITY_options=${DUPLICITY_OPTIONS}
+      - BACKUP_DUPLICITY_encrypt-key=${GPG_KEY}
+      - PASSPHRASE=${GPG_PASSPHRASE}
       - DEBUG=false
       - BACKUP_MODULE_database=${ENABLE_DUMP_SERVICE}
       - BACKUP_MODULE_stack=${ENABLE_DUMP_STACK}
@@ -43,13 +45,15 @@ services:
       io.rancher.sidekicks: docker-engine
       io.rancher.container.create_agent: true
       io.rancher.container.agent.role: environment
-      io.rancher.container.pull_image: always
     tty: true
-    image: webcenter/rancher-backup:develop
+    image: webcenter/rancher-backup:2.0.1-1
     stdin_open: false
     volumes:
+    {{- if (contains .Values.GPG_PATH "/")}}
+      - ${GPG_PATH}:/opt/backup/.gnupg
+    {{- end}}
     {{- if (contains .Values.VOLUME_DRIVER "/")}}
-      - ${VOLUME_DRIVER}:/data
+      - ${VOLUME_DRIVER}:/backup
     {{- else}}
       - backup-data:/backup
     {{- end}}
@@ -58,10 +62,11 @@ services:
     labels:
       io.rancher.scheduler.affinity:container_label_soft_ne: io.rancher.stack_service.name=$${stack_name}/$${service_name}
       io.rancher.container.hostname_override: container_name
-    image: index.docker.io/docker:1.13-dind
+    image: index.docker.io/docker:17.09-dind
+    command: --storage-driver=${DOCKER_DRIVER}
     volumes:
     {{- if (contains .Values.VOLUME_DRIVER "/")}}
-      - ${VOLUME_DRIVER}:/data
+      - ${VOLUME_DRIVER}:/backup
     {{- else}}
       - backup-data:/backup
     {{- end}}
